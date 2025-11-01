@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>African Nations League 2025</title>
+    
+    <!-- Bootstrap & SB Admin 2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+
+    <style>
+/* Safari Professional Theme */
+:root {
+    --safari-green: #2E8B57;
+    --sunset-gold: #D4A017;
+    --cream: #FDF6E3;
+    --charcoal: #36454F;
+    --coral: #FF7F50;
+}
+
+.sidebar {
+    background: linear-gradient(135deg, var(--safari-green) 0%, #26734D 100%) !important;
+}
+
+.bg-primary, .btn-primary {
+    background-color: var(--safari-green) !important;
+    border-color: var(--safari-green) !important;
+}
+
+.btn-success, .bg-success {
+    background-color: var(--sunset-gold) !important;
+    border-color: var(--sunset-gold) !important;
+    color: #1a1a1a !important;
+}
+
+.btn-warning {
+    background-color: var(--coral) !important;
+    border-color: var(--coral) !important;
+}
+
+body {
+    background-color: var(--cream) !important;
+}
+</style>
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-icon">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #D4AF37 0%, #006400 100%); color: white; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: bold; font-size: 16px;">
+                        CAF
+                    </div>
+                </div>
+                <div class="sidebar-brand-text mx-3">ANL 2025</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Items -->
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="matches.html">
+                    <i class="fas fa-trophy"></i>
+                    <span>Matches</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="teams.html">
+                    <i class="fas fa-users"></i>
+                    <span>Teams</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="simulate.html">
+                    <i class="fas fa-play"></i>
+                    <span>Simulate</span>
+                </a>
+            </li>
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item mx-1">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <a class="nav-link" href="matches.html">Matches</a>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <a class="nav-link" href="teams.html">Teams</a>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <a class="nav-link" href="simulate.html">Simulate</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Countdown Timer -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 bg-primary text-white">
+                                    <h6 class="m-0 font-weight-bold">Africa Cup of Nations 2026 Countdown</h6>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div id="countdown-timer" class="countdown-display">
+                                        <div class="countdown-item">
+                                            <span id="countdown-days">00</span>
+                                            <div class="countdown-label">Days</div>
+                                        </div>
+                                        <div class="countdown-item">
+                                            <span id="countdown-hours">00</span>
+                                            <div class="countdown-label">Hours</div>
+                                        </div>
+                                        <div class="countdown-item">
+                                            <span id="countdown-minutes">00</span>
+                                            <div class="countdown-label">Minutes</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="row">
+                        <!-- Upcoming Match Card -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Next Match</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="next-match">
+                                        Egypt vs Senegal
+                                    </div>
+                                    <div class="text-xs text-muted mt-1">20 Nov 2025 - 15:00</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Matches Played Card -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Matches Played</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="matches-played">6</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Teams Card -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Active Teams</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="active-teams">8</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="row">
+                        <div class="col-lg-4 mb-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 bg-success text-white">
+                                    <h6 class="m-0 font-weight-bold">Quick Actions</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-grid gap-2">
+                                        <a href="matches.html" class="btn btn-primary">
+                                            <i class="fas fa-trophy"></i> View All Matches
+                                        </a>
+                                        <a href="teams.html" class="btn btn-info">
+                                            <i class="fas fa-users"></i> View All Teams
+                                        </a>
+                                        <a href="simulate.html" class="btn btn-warning">
+                                            <i class="fas fa-play"></i> Simulate Tournament
+                                        </a>
+                                        <button class="btn btn-success" onclick="simulateNextMatch()">
+                                            <i class="fas fa-forward"></i> Simulate Next Match
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Matches -->
+                        <div class="col-lg-8 mb-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 bg-primary text-white">
+                                    <h6 class="m-0 font-weight-bold">Recent Matches</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="list-group">
+                                        <a href="match-detail.html?match=1" class="list-group-item list-group-item-action">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-1">Nigeria 2 - 1 South Africa</h6>
+                                                <small class="text-success">Completed</small>
+                                            </div>
+                                            <p class="mb-1">Quarter Final • 15 Nov 2025</p>
+                                        </a>
+                                        <a href="match-detail.html?match=2" class="list-group-item list-group-item-action">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-1">Ivory Coast 3 - 0 Cameroon</h6>
+                                                <small class="text-success">Completed</small>
+                                            </div>
+                                            <p class="mb-1">Quarter Final • 16 Nov 2025</p>
+                                        </a>
+                                        <a href="match-detail.html?match=3" class="list-group-item list-group-item-action">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-1">Morocco 1 - 1 Ghana</h6>
+                                                <small class="text-success">Completed</small>
+                                            </div>
+                                            <p class="mb-1">Quarter Final • 17 Nov 2025</p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tournament Bracket -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 bg-primary text-white">
+                                    <h6 class="m-0 font-weight-bold">Tournament Bracket - Road to Final</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tournament-bracket">
+                                        <div class="bracket-round">
+                                            <h5>Quarter Finals</h5>
+                                            <div class="bracket-match">
+                                                <div class="team team-winner">Nigeria</div>
+                                                <div class="team">2 - 1</div>
+                                                <div class="team">South Africa</div>
+                                            </div>
+                                            <div class="bracket-match">
+                                                <div class="team team-winner">Ivory Coast</div>
+                                                <div class="team">3 - 0</div>
+                                                <div class="team">Cameroon</div>
+                                            </div>
+                                            <div class="bracket-match">
+                                                <div class="team team-winner">Morocco</div>
+                                                <div class="team">1 - 1</div>
+                                                <div class="team">Ghana</div>
+                                                <small class="text-muted">(4-3 pens)</small>
+                                            </div>
+                                            <div class="bracket-match">
+                                                <div class="team">Egypt</div>
+                                                <div class="team">vs</div>
+                                                <div class="team">Senegal</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bracket-connector">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </div>
+                                        
+                                        <div class="bracket-round">
+                                            <h5>Semi Finals</h5>
+                                            <div class="bracket-match">
+                                                <div class="team">Nigeria</div>
+                                                <div class="team">vs</div>
+                                                <div class="team">Morocco</div>
+                                            </div>
+                                            <div class="bracket-match">
+                                                <div class="team">Ivory Coast</div>
+                                                <div class="team">vs</div>
+                                                <div class="team">Egypt/Senegal</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="bracket-connector">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </div>
+                                        
+                                        <div class="bracket-round">
+                                            <h5>Final</h5>
+                                            <div class="bracket-match final-match">
+                                                <div class="team">TBD</div>
+                                                <div class="team">vs</div>
+                                                <div class="team">TBD</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>African Nations League 2026 - INF4001N Project</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Bootstrap & JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/js/sb-admin-2.min.js"></script>
+    <script src="../js/countdown.js"></script>
+    <script src="../js/app.js"></script>
+</body>
+</html>

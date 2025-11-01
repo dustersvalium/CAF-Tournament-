@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Matches - African Nations League</title>
+    
+    <!-- Bootstrap & SB Admin 2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <style>
+/* Safari Professional Theme */
+:root {
+    --safari-green: #2E8B57;
+    --sunset-gold: #D4A017;
+    --cream: #FDF6E3;
+    --charcoal: #36454F;
+    --coral: #FF7F50;
+}
+
+.sidebar {
+    background: linear-gradient(135deg, var(--safari-green) 0%, #26734D 100%) !important;
+}
+
+.bg-primary, .btn-primary {
+    background-color: var(--safari-green) !important;
+    border-color: var(--safari-green) !important;
+}
+
+.btn-success, .bg-success {
+    background-color: var(--sunset-gold) !important;
+    border-color: var(--sunset-gold) !important;
+    color: #1a1a1a !important;
+}
+
+.btn-warning {
+    background-color: var(--coral) !important;
+    border-color: var(--coral) !important;
+}
+
+body {
+    background-color: var(--cream) !important;
+}
+</style>
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-icon">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #D4AF37 0%, #006400 100%); color: white; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: bold; font-size: 16px;">
+                        CAF
+                    </div>
+                </div>
+                <div class="sidebar-brand-text mx-3">ANL 2025</div>
+            </a>
+
+            <hr class="sidebar-divider my-0">
+
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" href="matches.html">
+                    <i class="fas fa-trophy"></i>
+                    <span>Matches</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="teams.html">
+                    <i class="fas fa-users"></i>
+                    <span>Teams</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="simulate.html">
+                    <i class="fas fa-play"></i>
+                    <span>Simulate</span>
+                </a>
+            </li>
+        </ul>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item mx-1">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <a class="nav-link active" href="matches.html">Matches</a>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <a class="nav-link" href="teams.html">Teams</a>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <a class="nav-link" href="simulate.html">Simulate</a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Tournament Matches</h1>
+                        <button class="btn btn-warning" onclick="simulateAllMatches()">
+                            <i class="fas fa-play-circle"></i> Simulate All Remaining Matches
+                        </button>
+                    </div>
+
+                    <!-- Match Filters -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-primary active" data-filter="all">All Matches</button>
+                                        <button type="button" class="btn btn-outline-primary" data-filter="completed">Completed</button>
+                                        <button type="button" class="btn btn-outline-primary" data-filter="upcoming">Upcoming</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Matches List -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 bg-primary text-white">
+                                    <h6 class="m-0 font-weight-bold">All Tournament Matches</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="list-group" id="matches-list">
+                                        <!-- Completed Matches -->
+                                        <a href="match-detail.html?match=1" class="list-group-item list-group-item-action match-item completed">
+                                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                                <div class="match-teams">
+                                                    <h5 class="mb-1">
+                                                        <span class="team-name">Nigeria</span>
+                                                        <span class="score">2 - 1</span>
+                                                        <span class="team-name">South Africa</span>
+                                                    </h5>
+                                                    <p class="mb-1 text-muted">
+                                                        <i class="fas fa-trophy"></i> Quarter Final • 
+                                                        <i class="fas fa-calendar"></i> 15 Nov 2025 • 
+                                                        <i class="fas fa-clock"></i> 15:00
+                                                    </p>
+                                                </div>
+                                                <div class="match-status">
+                                                    <span class="badge badge-success">Completed</span>
+                                                    <small class="text-muted">Click for details</small>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                        <a href="match-detail.html?match=2" class="list-group-item list-group-item-action match-item completed">
+                                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                                <div class="match-teams">
+                                                    <h5 class="mb-1">
+                                                        <span class="team-name">Ivory Coast</span>
+                                                        <span class="score">3 - 0</span>
+                                                        <span class="team-name">Cameroon</span>
+                                                    </h5>
+                                                    <p class="mb-1 text-muted">
+                                                        <i class="fas fa-trophy"></i> Quarter Final • 
+                                                        <i class="fas fa-calendar"></i> 16 Nov 2025 • 
+                                                        <i class="fas fa-clock"></i> 18:00
+                                                    </p>
+                                                </div>
+                                                <div class="match-status">
+                                                    <span class="badge badge-success">Completed</span>
+                                                    <small class="text-muted">Click for details</small>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                        <!-- Upcoming Matches -->
+                                        <div class="list-group-item list-group-item-action match-item upcoming">
+                                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                                <div class="match-teams">
+                                                    <h5 class="mb-1">
+                                                        <span class="team-name">Egypt</span>
+                                                        <span class="score">vs</span>
+                                                        <span class="team-name">Senegal</span>
+                                                    </h5>
+                                                    <p class="mb-1 text-muted">
+                                                        <i class="fas fa-trophy"></i> Quarter Final • 
+                                                        <i class="fas fa-calendar"></i> 20 Nov 2025 • 
+                                                        <i class="fas fa-clock"></i> 15:00
+                                                    </p>
+                                                </div>
+                                                <div class="match-status">
+                                                    <span class="badge badge-warning">Upcoming</span>
+                                                    <button class="btn btn-primary btn-sm mt-2" onclick="simulateSingleMatch(this)">
+                                                        <i class="fas fa-play"></i> Simulate Match
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- More matches... -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>African Nations League 2026 - INF4001N Project</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/js/sb-admin-2.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
