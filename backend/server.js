@@ -1,3 +1,4 @@
+// server.js
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -5,20 +6,28 @@ const cors = require('cors');
 const Team = require('./models/Team');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('✅ Connected to MongoDB Atlas'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+// Connect to MongoDB with better logging
+console.log('🔍 Attempting to connect to MongoDB...');
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 10000, // 10 second timeout
+})
+.then(() => {
+  console.log('✅ MongoDB connected successfully');
+})
+.catch(err => {
+  console.error('❌ MongoDB connection error:', err.message);
+  console.log('💡 Make sure your MongoDB Atlas IP whitelist includes your current IP');
+});
 
 // Routes
-
-// GET all teams
 app.get('/api/teams', async (req, res) => {
   try {
     const teams = await Team.find();
@@ -28,59 +37,53 @@ app.get('/api/teams', async (req, res) => {
   }
 });
 
-// GET single team
-app.get('/api/teams/:id', async (req, res) => {
-  try {
-    const team = await Team.findById(req.params.id);
-    if (!team) return res.status(404).json({ error: 'Team not found' });
-    res.json(team);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'Server is running',
+    database: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected'
+  });
 });
 
-// POST create new team
-app.post('/api/teams', async (req, res) => {
+// Add some demo data if database is empty
+app.post('/api/seed-demo', async (req, res) => {
   try {
-    const team = new Team(req.body);
-    await team.save();
-    res.status(201).json(team);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
-
-// PUT update team
-app.put('/api/teams/:id', async (req, res) => {
-  try {
-    const team = await Team.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    res.json(team);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
-
-// DELETE team
-app.delete('/api/teams/:id', async (req, res) => {
-  try {
-    await Team.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Team deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Add demo data (run once)
-app.post('/api/seed-demo-data', async (req, res) => {
-  try {
-    // We'll add this function next
-    await seedDemoData();
-    res.json({ message: 'Demo data added successfully' });
+    const demoTeams = [
+      {
+        name: 'Nigeria',
+        manager: 'Jose Peseiro',
+        country: 'Nigeria',
+        rating: 78.4,
+        players: []
+      },
+      {
+        name: 'Ivory Coast', 
+        manager: 'Emerse Fae',
+        country: 'Ivory Coast',
+        rating: 76.2,
+        players: []
+      },
+      {
+        name: 'Egypt',
+        manager: 'Hossam Hassan',
+        country: 'Egypt',
+        rating: 75.8,
+        players: []
+      }
+    ];
+    
+    // Clear existing teams and add demo data
+    await Team.deleteMany({});
+    const teams = await Team.insertMany(demoTeams);
+    
+    res.json({ message: 'Demo data added successfully', teams });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 MongoDB Server running on http://localhost:${PORT}`);
+  console.log(`📊 Teams API: http://localhost:${PORT}/api/teams`);
+  console.log(`❤️  Health check: http://localhost:${PORT}/api/health`);
 });
