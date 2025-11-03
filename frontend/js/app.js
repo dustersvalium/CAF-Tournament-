@@ -7,6 +7,52 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSimulation();
 });
 
+// Firebase Admin Functions
+async function initializeFirebaseData() {
+    const status = document.getElementById('firebase-status');
+    status.innerHTML = '<div class="alert alert-info">Initializing Firebase data...</div>';
+    
+    try {
+        await saveTeamsToFirebase();
+        await saveMatchesToFirebase();
+        status.innerHTML = '<div class="alert alert-success">Firebase data initialized successfully!</div>';
+    } catch (error) {
+        status.innerHTML = '<div class="alert alert-danger">Error initializing Firebase: ' + error.message + '</div>';
+    }
+}
+
+async function loadFromFirebase() {
+    const status = document.getElementById('firebase-status');
+    status.innerHTML = '<div class="alert alert-info">Loading from Firebase...</div>';
+    
+    try {
+        const teams = await loadTeamsFromFirebase();
+        const matches = await loadMatchesFromFirebase();
+        
+        if (teams && matches) {
+            const data = { teams, matches };
+            localStorage.setItem('tournamentData', JSON.stringify(data));
+            status.innerHTML = '<div class="alert alert-success">Data loaded from Firebase! Refresh the page.</div>';
+        } else {
+            status.innerHTML = '<div class="alert alert-warning">No data found in Firebase. Initialize first.</div>';
+        }
+    } catch (error) {
+        status.innerHTML = '<div class="alert alert-danger">Error loading from Firebase: ' + error.message + '</div>';
+    }
+}
+
+async function saveToFirebase() {
+    const status = document.getElementById('firebase-status');
+    status.innerHTML = '<div class="alert alert-info">Saving to Firebase...</div>';
+    
+    try {
+        await saveTeamsToFirebase();
+        await saveMatchesToFirebase();
+        status.innerHTML = '<div class="alert alert-success">Data saved to Firebase successfully!</div>';
+    } catch (error) {
+        status.innerHTML = '<div class="alert alert-danger">Error saving to Firebase: ' + error.message + '</div>';
+    }
+}
 
 // Load teams from shared data
 function loadTeams() {
@@ -365,8 +411,7 @@ function viewTeamDetails(teamName) {
 }
 
 function showRegisterTeamForm() {
-    // This would now make a POST request to your backend
-    alert('Team registration form would now connect to: http://localhost:5502/api/teams');
+    window.location.href = 'register-team.html';
 }
 
 // AI Commentary System
