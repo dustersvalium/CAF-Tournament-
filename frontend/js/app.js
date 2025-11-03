@@ -7,9 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSimulation();
 });
 
-// Load demo teams
-// Load teams from backend API
-// Load teams from shared data
+
 // Load teams from shared data
 function loadTeams() {
     const teamsGrid = document.getElementById('teams-grid');
@@ -69,7 +67,7 @@ function loadTeams() {
     }
 }
 
-// Keep your original function as fallback
+//Original function as fallback
 function loadDemoTeams() {
     const teamsGrid = document.getElementById('teams-grid');
     if (!teamsGrid) return;

@@ -1,4 +1,4 @@
-// data.js - Single Source of Truth
+
 const tournamentData = {
     teams: [
         { id: 1, name: 'Nigeria', manager: 'Jose Peseiro', country: 'Nigeria', rating: 78.4, players: [] },
@@ -19,7 +19,7 @@ const tournamentData = {
     ]
 };
 
-// Simple functions - no complex logic
+
 function loadTournamentData() {
     const saved = localStorage.getItem('tournamentData');
     if (saved) {

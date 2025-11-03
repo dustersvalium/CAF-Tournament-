@@ -1,3 +1,4 @@
+//we run the demo data off this server
 const http = require('http');
 
 const teams = [
