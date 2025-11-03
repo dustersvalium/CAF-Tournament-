@@ -1,0 +1,61 @@
+<!-- test-teams.html -->
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>API Test</h2>
+    <button onclick="testAPI()">Test Teams API</button>
+    <div id="output" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;"></div>
+    
+    <script>
+    async function testAPI() {
+        const output = document.getElementById('output');
+        output.innerHTML = 'Testing...';
+        
+        try {
+            // Test multiple possible URLs
+            const urls = [
+                'http://localhost:5502/api/teams',
+                'http://127.0.0.1:5502/api/teams'
+            ];
+            
+            let success = false;
+            
+            for (let url of urls) {
+                output.innerHTML = `Trying: ${url}...<br>`;
+                
+                try {
+                    const response = await fetch(url);
+                    console.log('Response status:', response.status);
+                    
+                    if (response.ok) {
+                        const teams = await response.json();
+                        output.innerHTML = `
+                            <div style="color: green;">
+                                <strong>SUCCESS!</strong><br>
+                                URL: ${url}<br>
+                                Status: ${response.status}<br>
+                                Teams loaded: ${teams.length}
+                            </div>
+                            <pre>${JSON.stringify(teams, null, 2)}</pre>
+                        `;
+                        success = true;
+                        break;
+                    } else {
+                        output.innerHTML += `Failed: HTTP ${response.status}<br>`;
+                    }
+                } catch (err) {
+                    output.innerHTML += `Error: ${err.message}<br>`;
+                }
+            }
+            
+            if (!success) {
+                output.innerHTML += '<div style="color: red;">All connection attempts failed</div>';
+            }
+            
+        } catch (error) {
+            output.innerHTML = `<div style="color: red;">Unexpected error: ${error.message}</div>`;
+        }
+    }
+    </script>
+</body>
+</html>

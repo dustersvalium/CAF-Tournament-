@@ -9,24 +9,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Load demo teams
 // Load teams from backend API
-async function loadTeams() {
+// Load teams from shared data
+// Load teams from shared data
+function loadTeams() {
     const teamsGrid = document.getElementById('teams-grid');
     if (!teamsGrid) return;
 
     try {
-        teamsGrid.innerHTML = '<div class="col-12 text-center"><div class="spinner-border text-primary"></div><p class="mt-2">Loading teams...</p></div>';
+        console.log('Loading teams...'); // Debug log
         
-        // UPDATE THIS LINE to use port 5502 (or whatever port your server shows)
-        const response = await fetch('http://localhost:3000/api/teams');
+        const data = loadTournamentData();
+        console.log('Data loaded:', data); // Debug log
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        if (!data || !data.teams) {
+            throw new Error('No teams data found');
         }
         
-        const teams = await response.json();
-        console.log('Teams loaded from API:', teams)
+        const teams = data.teams;
+        console.log('Teams found:', teams.length); // Debug log
         
-        // Render teams from API data
         teamsGrid.innerHTML = teams.map(team => `
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border-left-primary shadow h-100 py-2">
@@ -37,13 +38,13 @@ async function loadTeams() {
                                     ${team.name}
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    Rating: ${team.rating || 'N/A'}
+                                    Rating: ${team.rating}
                                 </div>
                                 <div class="text-xs text-muted mt-1">
-                                    Manager: ${team.manager || 'Not specified'}
+                                    Manager: ${team.manager}
                                 </div>
                                 <div class="text-xs text-muted">
-                                    Country: ${team.country || 'Not specified'}
+                                    Country: ${team.country}
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -59,6 +60,8 @@ async function loadTeams() {
                 </div>
             </div>
         `).join('');
+        
+        console.log('Teams loaded successfully'); // Debug log
         
     } catch (error) {
         console.error('Error loading teams:', error);
@@ -115,12 +118,29 @@ function loadDemoTeams() {
 
 // Simulation functions
 function simulateNextMatch() {
-    showLoading('Simulating next match with AI commentary...');
+    showLoading('Simulating next match...');
     setTimeout(() => {
         const commentary = generateMatchCommentary('Nigeria', 'South Africa', 2, 1);
         displayMatchCommentary(commentary, 'Nigeria', 'South Africa', '2-1');
         hideLoading();
     }, 3000);
+}
+
+function simulateRound(round) {
+    showLoading(`Simulating ${round} finals...`);
+    setTimeout(() => {
+        const commentary = [
+            `🏆 ${round.toUpperCase()} FINALS SIMULATION`,
+            `📊 Simulating all ${round} final matches...`,
+            `⚽ Nigeria 2-1 South Africa`,
+            `⚽ Egypt 1-1 Senegal (3-2 on penalties)`,
+            `⚽ Ivory Coast 2-0 Morocco`,
+            `⚽ Ghana 1-2 Cameroon`,
+            `🎯 ${round} finals completed! Moving to next round...`
+        ];
+        displayMatchCommentary(commentary, `${round} Finals`, 'Complete', 'Simulated');
+        hideLoading();
+    }, 4000);
 }
 
 function simulateAllMatches() {
@@ -136,11 +156,15 @@ function simulateAllMatches() {
 
 function simulateSingleMatch(button) {
     const matchItem = button.closest('.match-item');
-    const teamNames = matchItem.querySelector('.team-name').textContent.split(' vs ');
-    const team1 = teamNames[0].trim();
-    const team2 = teamNames[1].trim();
     
-    showLoading('Simulating match...');
+    // Get the actual teams from the match item
+    const teamElements = matchItem.querySelectorAll('.team');
+    const team1 = teamElements[0].textContent.trim();
+    const team2 = teamElements[1].textContent.trim();
+    
+    console.log('Simulating:', team1, 'vs', team2);
+    
+    showLoading(`Simulating ${team1} vs ${team2}...`);
     
     setTimeout(() => {
         const score1 = Math.floor(Math.random() * 4);
@@ -149,16 +173,38 @@ function simulateSingleMatch(button) {
         
         // Update match display
         matchItem.querySelector('.score').textContent = score;
-        matchItem.querySelector('.badge').textContent = 'Completed';
-        matchItem.querySelector('.badge').className = 'badge badge-success';
+        matchItem.querySelector('.score').className = 'badge badge-success mr-2';
         button.style.display = 'none';
         
-        // Generate and display AI commentary in live feed
+        // Generate and display AI commentary with the ACTUAL teams
         const commentary = generateMatchCommentary(team1, team2, score1, score2);
         displayMatchCommentary(commentary, team1, team2, score);
         
         hideLoading();
     }, 2000);
+}
+
+function simulateFullTournament() {
+    showLoading('Simulating full tournament...');
+    setTimeout(() => {
+        const commentary = [
+            '🏆 AFRICAN NATIONS LEAGUE 2025 - FULL TOURNAMENT SIMULATION',
+            '📊 Starting group stage matches...',
+            '⚽ Nigeria 2-1 South Africa',
+            '⚽ Egypt 1-1 Senegal',
+            '⚽ Ivory Coast 2-0 Morocco', 
+            '⚽ Ghana 1-2 Cameroon',
+            '📈 Advancing to knockout stages...',
+            '🎯 Quarter Finals completed!',
+            '🔥 Semi Finals completed!',
+            '🌟 FINAL: Nigeria vs Egypt',
+            '⚽⚽ Nigeria 3-1 Egypt',
+            '🏆 TOURNAMENT CHAMPION: NIGERIA!',
+            '🎊 Tournament simulation complete!'
+        ];
+        displayMatchCommentary(commentary, 'Full Tournament', 'Simulation', 'Complete');
+        hideLoading();
+    }, 5000);
 }
 
 function displayMatchCommentary(commentary, team1, team2, score) {
