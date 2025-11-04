@@ -290,6 +290,50 @@ function simulateFullTournament() {
     }, 5000);
 }
 
+// Reset tournament to initial state
+function resetTournament() {
+    if (confirm('Are you sure you want to reset all matches? This will clear all scores and set matches back to upcoming.')) {
+        showLoading('Resetting tournament...');
+        
+        setTimeout(() => {
+            try {
+                const data = loadTournamentData();
+                
+                // Reset all matches to upcoming
+                data.matches.forEach(match => {
+                    match.score1 = null;
+                    match.score2 = null;
+                    match.completed = false;
+                });
+                
+                // Save the reset data
+                saveTournamentData(data);
+                
+                // Update Firebase if available
+                if (typeof saveMatchesToFirebase === 'function') {
+                    saveMatchesToFirebase().then(() => {
+                        hideLoading();
+                        alert('Tournament reset successfully! All matches are now upcoming.');
+                        location.reload(); // Refresh the page
+                    }).catch(error => {
+                        hideLoading();
+                        alert('Tournament reset locally, but Firebase update failed: ' + error.message);
+                        location.reload();
+                    });
+                } else {
+                    hideLoading();
+                    alert('Tournament reset successfully! All matches are now upcoming.');
+                    location.reload();
+                }
+                
+            } catch (error) {
+                hideLoading();
+                alert('Error resetting tournament: ' + error.message);
+            }
+        }, 1000);
+    }
+}
+
 function displayMatches(matches) {
     const matchesList = document.getElementById('matches-list');
     
