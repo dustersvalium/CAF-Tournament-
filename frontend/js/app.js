@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeTeamRatingsChart();
     loadTeams();
     setupSimulation();
+    loadMatches(); // Add this line to load matches
 });
+
 
 // Firebase Admin Functions
 async function initializeFirebaseData() {
@@ -220,12 +222,49 @@ function simulateSingleMatch(button) {
         matchItem.querySelector('.score').className = 'badge badge-success mr-2';
         button.style.display = 'none';
         
+        // ✅ CRITICAL: Save the scores to the match data
+        updateMatchInDatabase(team1, team2, score1, score2);
+        
         // Generate and display AI commentary with the ACTUAL teams
         const commentary = generateMatchCommentary(team1, team2, score1, score2);
         displayMatchCommentary(commentary, team1, team2, score);
         
         hideLoading();
     }, 2000);
+}
+
+// ✅ NEW FUNCTION: Update match scores in the database
+function updateMatchInDatabase(team1, team2, score1, score2) {
+    try {
+        const data = loadTournamentData();
+        
+        // Find the match in our data
+        const matchIndex = data.matches.findIndex(match => 
+            match.team1 === team1 && match.team2 === team2
+        );
+        
+        if (matchIndex !== -1) {
+            // Update the match with scores
+            data.matches[matchIndex].score1 = score1;
+            data.matches[matchIndex].score2 = score2;
+            data.matches[matchIndex].completed = true;
+            data.matches[matchIndex].id = data.matches[matchIndex].id || Date.now(); // Ensure ID exists
+            
+            console.log('Updated match:', data.matches[matchIndex]);
+            
+            // Save back to localStorage
+            saveTournamentData(data);
+            
+            // Also update Firebase if available
+            if (typeof updateMatchInFirebase === 'function' && data.matches[matchIndex].id) {
+                updateMatchInFirebase(data.matches[matchIndex].id.toString(), score1, score2);
+            }
+        } else {
+            console.warn('Match not found in database:', team1, 'vs', team2);
+        }
+    } catch (error) {
+        console.error('Error updating match in database:', error);
+    }
 }
 
 function simulateFullTournament() {
@@ -249,6 +288,103 @@ function simulateFullTournament() {
         displayMatchCommentary(commentary, 'Full Tournament', 'Simulation', 'Complete');
         hideLoading();
     }, 5000);
+}
+
+function displayMatches(matches) {
+    const matchesList = document.getElementById('matches-list');
+    
+    if (!matches || matches.length === 0) {
+        matchesList.innerHTML = `
+            <div class="text-center py-4 text-muted">
+                <i class="fas fa-trophy fa-2x mb-2"></i>
+                <p>No matches scheduled yet</p>
+            </div>
+        `;
+        return;
+    }
+    
+    matchesList.innerHTML = matches.map(match => {
+        // Use actual scores from match data
+        const score1 = match.score1 !== null && match.score1 !== undefined ? match.score1 : 0;
+        const score2 = match.score2 !== null && match.score2 !== undefined ? match.score2 : 0;
+        const displayScore = match.completed ? `${score1} - ${score2}` : 'VS';
+        
+        return `
+        <a href="match-details.html?id=${match.id}" class="list-group-item list-group-item-action match-item ${match.completed ? 'completed' : 'upcoming'}" 
+           style="transition: all 0.3s ease; border-left: 4px solid ${match.completed ? '#28a745' : '#ffc107'};">
+            <div class="d-flex w-100 justify-content-between align-items-center">
+                <div class="match-teams flex-grow-1">
+                    <h5 class="mb-1">
+                        <span class="team-name font-weight-bold ${match.completed ? 'text-dark' : 'text-primary'}">${match.team1}</span>
+                        <span class="score mx-3 ${match.completed ? 'text-success font-weight-bold' : 'text-muted'}">
+                            ${displayScore}
+                        </span>
+                        <span class="team-name font-weight-bold ${match.completed ? 'text-dark' : 'text-primary'}">${match.team2}</span>
+                    </h5>
+                    <p class="mb-1 text-muted">
+                        <i class="fas fa-trophy"></i> Group Stage • 
+                        <i class="fas fa-calendar"></i> ${getRandomMatchDate()} • 
+                        <i class="fas fa-clock"></i> ${getRandomMatchTime()}
+                    </p>
+                </div>
+                <div class="match-status text-right">
+                    <span class="badge ${match.completed ? 'badge-success' : 'badge-warning'}">
+                        ${match.completed ? 'Completed' : 'Upcoming'}
+                    </span>
+                    <br>
+                    <small class="text-muted">Click for details</small>
+                </div>
+            </div>
+        </a>
+        `;
+    }).join('');
+    
+    // Add hover effects
+    addMatchHoverEffects();
+}
+
+// Hover effects for match items
+function addMatchHoverEffects() {
+    const matchItems = document.querySelectorAll('.match-item');
+    matchItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateX(5px)';
+            this.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+            this.style.backgroundColor = '#f8f9fa';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateX(0)';
+            this.style.boxShadow = 'none';
+            this.style.backgroundColor = '';
+        });
+    });
+}
+
+
+function loadMatches() {
+    const matchesList = document.getElementById('matches-list');
+    if (!matchesList) return;
+
+    try {
+        const data = loadTournamentData();
+        console.log('Matches data:', data.matches);
+        
+        if (!data || !data.matches) {
+            throw new Error('No matches data found');
+        }
+        
+        displayMatches(data.matches);
+        
+    } catch (error) {
+        console.error('Error loading matches:', error);
+        matchesList.innerHTML = `
+            <div class="text-center py-4 text-danger">
+                <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                <p>Failed to load matches: ${error.message}</p>
+            </div>
+        `;
+    }
 }
 
 function displayMatchCommentary(commentary, team1, team2, score) {
@@ -346,15 +482,14 @@ function hideLoading() {
     if (loader) loader.remove();
 }
 
-// Keep your existing functions
 function initializeMatchFilters() {
     const filterButtons = document.querySelectorAll('[data-filter]');
-    const matchItems = document.querySelectorAll('.match-item');
     
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
             const filter = this.getAttribute('data-filter');
             
+            // Update button states
             filterButtons.forEach(btn => {
                 btn.classList.remove('active', 'btn-primary');
                 btn.classList.add('btn-outline-primary');
@@ -362,11 +497,13 @@ function initializeMatchFilters() {
             this.classList.add('active', 'btn-primary');
             this.classList.remove('btn-outline-primary');
             
+            // Filter matches
+            const matchItems = document.querySelectorAll('.match-item');
             matchItems.forEach(item => {
                 if (filter === 'all') {
-                    item.style.display = 'flex';
+                    item.style.display = 'block';
                 } else if (item.classList.contains(filter)) {
-                    item.style.display = 'flex';
+                    item.style.display = 'block';
                 } else {
                     item.style.display = 'none';
                 }
@@ -379,24 +516,61 @@ function initializeTeamRatingsChart() {
     const ctx = document.getElementById('teamRatingsChart');
     if (!ctx) return;
     
+    // Load team data for the chart
+    const data = loadTournamentData();
+    const teams = data.teams.slice(0, 8); // Show first 8 teams or all
+    
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Nigeria', 'Ivory Coast', 'Egypt', 'Senegal', 'Morocco', 'Ghana', 'Cameroon', 'South Africa'],
+            labels: teams.map(team => team.name),
             datasets: [{
                 label: 'Team Rating',
-                data: [78.4, 76.2, 75.8, 79.1, 74.5, 73.9, 72.8, 71.5],
+                data: teams.map(team => team.rating),
                 backgroundColor: [
                     '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e',
                     '#e74a3b', '#858796', '#5a5c69', '#2e59d9'
-                ]
+                ],
+                borderColor: [
+                    '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', 
+                    '#e74a3b', '#858796', '#5a5c69', '#2e59d9'
+                ],
+                borderWidth: 1
             }]
         },
         options: {
             responsive: true,
-            plugins: { legend: { display: false } },
+            maintainAspectRatio: false, // This is important for custom heights
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Team Ratings Comparison'
+                }
+            },
             scales: {
-                y: { beginAtZero: true, max: 100, title: { display: true, text: 'Rating' } }
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    title: {
+                        display: true,
+                        text: 'Rating'
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                }
             }
         }
     });
@@ -407,7 +581,13 @@ function setupSimulation() {
 }
 
 function viewTeamDetails(teamName) {
-    alert(`Viewing details for ${teamName}\n\nThis would show the full squad with player ratings.`);
+    // Navigate to team details page with team name as parameter
+    window.location.href = `team-details.html?team=${encodeURIComponent(teamName)}`;
+}
+
+
+function viewMatchDetails(matchId) {
+    window.location.href = `match-details.html?id=${matchId}`;
 }
 
 function showRegisterTeamForm() {
@@ -489,4 +669,18 @@ function generateMatchCommentary(team1, team2, score1, score2, events) {
     }
     
     return commentary;
+}
+
+// Helper functions for match dates and times
+function getRandomMatchDate() {
+    const dates = [
+        '15 Nov 2025', '16 Nov 2025', '17 Nov 2025', '18 Nov 2025',
+        '20 Nov 2025', '21 Nov 2025', '22 Nov 2025', '23 Nov 2025'
+    ];
+    return dates[Math.floor(Math.random() * dates.length)];
+}
+
+function getRandomMatchTime() {
+    const times = ['15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+    return times[Math.floor(Math.random() * times.length)];
 }
