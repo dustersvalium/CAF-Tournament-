@@ -1,4 +1,5 @@
-//we run the demo data off this server
+//Final iteration
+// Run the demo data off this server, the others not important anymore
 const http = require('http');
 
 const teams = [

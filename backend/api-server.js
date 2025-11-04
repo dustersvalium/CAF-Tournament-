@@ -1,4 +1,4 @@
-// api-server.js
+
 const http = require('http');
 
 const teams = [

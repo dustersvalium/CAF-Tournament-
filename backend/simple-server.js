@@ -73,10 +73,8 @@ if (req.method === 'GET') {
     
     // Build full path - FIX THIS LINE
     const fullPath = path.join(__dirname, '..', '..', filePath);
-    // OR even better, use absolute path:
-    // const fullPath = path.join(process.cwd(), filePath);
-    
-    console.log('Looking for file:', fullPath); // Add this for debugging
+   
+    console.log('Looking for file:', fullPath); 
     
     // Check if file exists
     if (fs.existsSync(fullPath)) {

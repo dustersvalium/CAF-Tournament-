@@ -1,4 +1,4 @@
-// match-details.js - Match Details Page Functionality
+// Match Details Page Logic
 
 document.addEventListener('DOMContentLoaded', function() {
     loadMatchDetails();

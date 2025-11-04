@@ -1,4 +1,4 @@
-// auth.js - Authentication System
+// Authentication System logic
 
 // User roles and permissions
 const USER_ROLES = {
@@ -16,7 +16,7 @@ const PAGE_PERMISSIONS = {
     'match-details.html': [USER_ROLES.ADMIN, USER_ROLES.REPRESENTATIVE]
 };
 
-// Pre-defined users (in a real app, these would be in Firestore)
+// Pre-defined users 
 const PRE_DEFINED_USERS = {
     'admin@caf.com': {
         password: 'admin123',
@@ -283,7 +283,7 @@ async function initializeDemoUsers() {
             createdAt: new Date()
         });
         
-        // Create representative user  
+        // Create fed representative user  
         await db.collection('users').doc('rep').set({
             email: 'rep@caf.com',
             role: USER_ROLES.REPRESENTATIVE, 

@@ -1,4 +1,4 @@
-// firebase-db.js - Firebase Database Operations
+// Firebase Database Operations
 const teamPlayersData = {
     nigeria: [
         { name: "Stanley Nwabali", position: "GK", isCaptain: false, ratings: { GK: 82, DF: 35, MD: 25, AT: 10 } },

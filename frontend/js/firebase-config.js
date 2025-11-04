@@ -1,4 +1,4 @@
-// firebase-config.js
+
 // Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCQa247hb3_V0Khb-8jvtg6nIN7OgA1gkM",
@@ -10,7 +10,6 @@ const firebaseConfig = {
   measurementId: "G-0YT99D8ZXZ"
 };
 
-// Initialize Firebase
 // Initialize Firebase
 try {
     if (!firebase.apps.length) {

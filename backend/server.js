@@ -1,4 +1,4 @@
-// server.js
+//Using this to demo server functionality on site since MongoDb won't respond
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
