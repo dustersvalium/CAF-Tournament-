@@ -11,22 +11,26 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+// Initialize Firebase
 try {
-    // Check if Firebase is already initialized
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
     
-    // Initialize Firestore
+    // Initialize services
+    const auth = firebase.auth();
     const db = firebase.firestore();
     
-    // Make db available globally
+    // Make available globally
+    window.auth = auth;
     window.db = db;
+    
     console.log('✅ Firebase initialized successfully');
     
 } catch (error) {
     console.error('❌ Firebase initialization error:', error);
 }
+
 
 // Auto-populate teams when initializing Firebase data
 async function initializeFirebaseDataWithPlayers() {

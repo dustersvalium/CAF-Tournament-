@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login - African Nations League</title>
+    
+    <!-- Bootstrap & SB Admin 2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+
+    <style>
+        .login-background {
+            background: linear-gradient(135deg, #2E8B57 0%, #1a5c38 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        .login-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .login-header {
+            background: linear-gradient(135deg, #D4A017 0%, #b8860b 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+    </style>
+</head>
+
+<body class="login-background">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-6 col-lg-8 col-md-9">
+                <div class="card login-card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Header -->
+                        <div class="login-header py-4 text-center">
+                            <div class="d-flex align-items-center justify-content-center mb-3">
+                                <div style="width: 60px; height: 60px; background: white; color: #2E8B57; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: bold; font-size: 20px;">
+                                    CAF
+                                </div>
+                            </div>
+                            <h2 class="font-weight-bold">African Nations League</h2>
+                            <p class="mb-0">Tournament Management System</p>
+                        </div>
+
+                        <!-- Login Form -->
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                            </div>
+                            <form id="loginForm" class="user">
+                                <div class="form-group">
+                                    <input type="email" class="form-control form-control-user" 
+                                           id="email" placeholder="Enter Email Address..." required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control form-control-user" 
+                                           id="password" placeholder="Password" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-user btn-block">
+                                    Login
+                                </button>
+                            </form>
+                            <hr>
+                            
+                            <!-- Demo Credentials -->
+                            <div class="text-center">
+                                <h6 class="text-gray-600 mb-3">Demo Credentials:</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-2">
+                                        <div class="card border-left-primary h-100">
+                                            <div class="card-body py-2">
+                                                <small class="font-weight-bold text-primary">Admin</small><br>
+                                                <small>admin@caf.com</small><br>
+                                                <small>admin123</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <div class="card border-left-success h-100">
+                                            <div class="card-body py-2">
+                                                <small class="font-weight-bold text-success">Team Rep</small><br>
+                                                <small>rep@caf.com</small><br>
+                                                <small>rep123</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Login Status -->
+                            <div id="login-status" class="mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>
