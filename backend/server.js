@@ -8,8 +8,6 @@ const Team = require('./models/Team');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const cors = require('cors');
-
 app.use(cors({
   origin: ["https://caf-tournament-git-main-dustersvaliums-projects.vercel.app/"],
   credentials: true
