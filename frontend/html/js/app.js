@@ -1,4 +1,4 @@
-const API_URL = "caf-tournament-production.up.railway.app";
+const API_URL = "https://caf-tournament-production.up.railway.app/";
 // Main Application Logic - No Authentication Needed
 document.addEventListener('DOMContentLoaded', function() {
     initializeMatchFilters();
